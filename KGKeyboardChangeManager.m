@@ -118,41 +118,12 @@
     [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
     [userInfo[UIKeyboardFrameEndUserInfoKey] getValue:&keyboardEndFrame];
 
-    // The keyboard frame is in portrait space
-    CGRect newKeyboardEndFrame = CGRectZero;    
-    UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-    if(interfaceOrientation == UIInterfaceOrientationPortrait){
-        newKeyboardEndFrame = keyboardEndFrame;
-        if(!show){
-            newKeyboardEndFrame.origin.y = MIN(newKeyboardEndFrame.origin.y, CGRectGetHeight([[UIScreen mainScreen] bounds]));
+    
+    [self.changeCallbacks enumerateKeysAndObjectsUsingBlock:^(id key, KGKeyboardChangeManagerKeyboardChangedBlock block, BOOL *stop){
+        if(block){
+            block(show, keyboardEndFrame, animationDuration, animationCurve);
         }
-    }else if(interfaceOrientation == UIInterfaceOrientationLandscapeLeft){
-        newKeyboardEndFrame.origin.y = CGRectGetMinX(keyboardEndFrame);
-        newKeyboardEndFrame.size.width = CGRectGetHeight(keyboardEndFrame);
-        newKeyboardEndFrame.size.height = CGRectGetWidth(keyboardEndFrame);
-    }else if(interfaceOrientation == UIInterfaceOrientationLandscapeRight){
-        newKeyboardEndFrame.size.width = CGRectGetHeight(keyboardEndFrame);
-        newKeyboardEndFrame.size.height = CGRectGetWidth(keyboardEndFrame);
-        newKeyboardEndFrame.origin.y = CGRectGetWidth([[UIScreen mainScreen] bounds])-CGRectGetMaxX(keyboardEndFrame);
-    }else if(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown){
-        newKeyboardEndFrame = keyboardEndFrame;
-        newKeyboardEndFrame.origin.y = CGRectGetHeight([[UIScreen mainScreen] bounds])-CGRectGetMaxY(keyboardEndFrame);
-    }
-
-    // Call the appropriate callback
-//    if(self.orientationChange){
-//        [self.orientationCallbacks enumerateKeysAndObjectsUsingBlock:^(id key, KGKeyboardChangeManagerKeyboardOrientationBlock block, BOOL *stop){
-//            if(block){
-//                block(newKeyboardEndFrame);
-//            }
-//        }];
-//    }else{
-        [self.changeCallbacks enumerateKeysAndObjectsUsingBlock:^(id key, KGKeyboardChangeManagerKeyboardChangedBlock block, BOOL *stop){
-            if(block){
-                block(show, newKeyboardEndFrame, animationDuration, animationCurve);
-            }
-        }];
-//    }
+    }];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification{
