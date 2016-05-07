@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "KGKeyboardChangeManager"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "A block-based wrapper around the hairy world of iOS keyboard notifications and frames"
 
   s.description  = <<-DESC
@@ -78,7 +78,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/Speedy-Cat/KGKeyboardChangeManager.git", :tag => 'v0.0.1' }
+  s.source       = { :git => "https://github.com/Speedy-Cat/KGKeyboardChangeManager.git", :tag => 'v0.0.2' }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
